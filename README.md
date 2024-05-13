@@ -13,7 +13,10 @@ The simulation is originally taken from https://github.com/UniversalRobots/Unive
    sudo apt update
    sudo apt upgrade
    ```
-2. Define workspace, import necessary repos 
+
+   As a next step we will install TOPP which is needed for trajectory generation
+   TODO
+3. Define workspace, import necessary repos 
    ```
    mkdir benchmark_ws && cd benchmark_ws
    mkdir src && cd src 
@@ -38,16 +41,16 @@ The simulation is originally taken from https://github.com/UniversalRobots/Unive
    ```
    Now the workspace should be complete
 
-3. Build the workspace:
+4. Build the workspace:
    ```
    colcon build
    ```
-4. Run simulation with moveit geometric planner
+5. Run simulation with moveit geometric planner
    ```
    ros2 launch ur_simulation_gazebo ur_sim_moveit.launch.py ur_type:=ur10e
    ```
    In rviz you can now choose a desired pose and apply the plan and execute button in the bottom left
-5. Run simulation with ompl planner
+6. Run simulation with ompl planner
    ```
    ros2 launch ur_simulation_gazebo ur_sim_moveit.launch.py ur_type:=ur10e
    ```
