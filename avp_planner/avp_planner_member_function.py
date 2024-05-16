@@ -52,7 +52,7 @@ class AVP_Planner(Node):
         # define desired position (which is random)
         self.robot.set_goal_state(robot_state=self.robot_state)
 
-        # plan and execute
+        # plan and execute both via moveit!!
         self.plan_and_execute(sleep_time=3.0)
 
 
@@ -97,13 +97,14 @@ class AVP_Planner(Node):
                                             self.constraintsstring0, self.tuningsstring0, 
                                             self.nn, self.metrictype, self.polynomialdegree, ndof=6)
         
+        # Get a plan via AVP-Planner
         self.birrtinstance.Run(self.allottedtime)
         self.plantime.append(self.birrtinstance.runningtime)
 
         # Run TOPP one last time to recover full solution
         if self.birrtinstance.found:
             self.Recover_start_to_end()
-            self.SendTrajectoryToRobot()
+            self.SendTrajectoryToRobot() # send the trajecotry via moveit
 
     def plan_and_execute(self,
         single_plan_parameters=None,
@@ -128,7 +129,8 @@ class AVP_Planner(Node):
         # execute the plan
         if plan_result:
             robot_trajectory = plan_result.trajectory
-            self.logger.info(str(robot_trajectory.get_robot_trajectory_msg()))
+            # plots the resulting trajectory
+            # self.logger.info(str(robot_trajectory.get_robot_trajectory_msg()))
             self.moveit_py.execute(robot_trajectory, controllers=[])
             #RobotTrajectory().
             self.logger.info("plan executed")
