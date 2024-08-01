@@ -43,41 +43,24 @@ class AVP_Planner(Node):
         self.plantime = []
         self.topptime = []
 
-        # Now follows a first example to see the robot moving
-        self.robot.set_start_state_to_current_state()
+        ###########################################################################
+        # Plan 1 - use this part to plan with moveit (no collision checking impl.)
+        ###########################################################################
+        # # Now follows a first example to see the robot moving
+        # self.robot.set_start_state_to_current_state()
         
-        # randomize the robot state
-        self.robot_state.set_to_random_positions()
+        # # randomize the robot state
+        # self.robot_state.set_to_random_positions()
 
-        # define desired position (which is random)
-        self.robot.set_goal_state(robot_state=self.robot_state)
+        # # define desired position (which is random)
+        # self.robot.set_goal_state(robot_state=self.robot_state)
 
-        # plan and execute both via moveit!!
-        self.plan_and_execute(sleep_time=3.0)
-
+        # # plan and execute both via moveit!!
+        # self.plan_and_execute(sleep_time=3.0)
 
         ###########################################################################
-        # Plan 1 - set states with predefined string
+        # Plan 2 - use this part to plan with avp
         ###########################################################################
-
-        # set plan start state using predefined state
-        #ur_arm.set_start_state(configuration_name="ready")
-
-        # set pose goal using predefined state
-        #ur_arm.set_goal_state(configuration_name="extended")
-
-        # plan to goal
-        #self.plan_and_execute(self, ur_arm, logger, sleep_time=3.0)
-
-
-
-        # initializing the publisher and topic where we will publish the planned state trajectory
-        # Check if ros functionality still works
-        #self.publisher_ = self.create_publisher(JointTrajectory, '/joint_trajectory_controller/joint_trajectory', 10)
-
-        # Wait for current state, destroy after message is first received
-        #self.subscriber_ = self.create_subscription(JointTrajectoryControllerState, '/joint_trajectory_controller/state', self.state_callback,10)
-        #self.subscriber_ # avoid unused variable warning
 
         self.define_params()
 
@@ -241,7 +224,7 @@ class AVP_Planner(Node):
     # Sending the whole trajectory for execution
     def SendTrajectoryToRobot(self):
 
-        #Robot_traj_object = RobotTrajectory(self.robot_model)
+        Robot_traj_object = RobotTrajectory(self.robot_model)
 
         joint_traj = JointTrajectory()
 
@@ -252,13 +235,13 @@ class AVP_Planner(Node):
         number_points = 100 # in the end we have one point more b.c of t = 0
         
         for iterator in range(number_points + 1):
-            point = self.to_joint_trajectory_point(iterator, number_points)  # Assuming this method exists in your Chunk class
+            point = self.to_joint_trajectory_point(iterator, number_points)  
             joint_traj.points.append(point)
 
         # sending it via moveitpy
-        #traj = Robot_traj_object.set_robot_trajectory_msg(joint_traj)
+        # traj = Robot_traj_object.set_robot_trajectory_msg(joint_traj)
 
-        #self.moveit_py.execute(joint_traj, controllers=[])
+        self.moveit_py.execute(joint_traj, controllers=[])
 
         #print(joint_traj)
         #print(self.traj1.Eval(self.traj1.duration))
@@ -299,6 +282,9 @@ class AVP_Planner(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+
+    logger = get_logger("moveit_py.pose_goal")
+    moveit_py = MoveItPy(node_name="moveit_py")
 
     avp_planner = AVP_Planner()
 
