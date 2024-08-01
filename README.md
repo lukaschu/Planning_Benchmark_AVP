@@ -13,6 +13,8 @@ The simulation is originally taken from https://github.com/UniversalRobots/Unive
    sudo apt update
    sudo apt upgrade
    ```
+   > **NOTE:** Alternatively one can also build moveit by following the instructions in https://moveit.ros.org/install-moveit2/source/
+   >
 
    As a next step we will install TOPP which is needed for trajectory generation
    TODO
