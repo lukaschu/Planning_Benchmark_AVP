@@ -46,17 +46,17 @@ class AVP_Planner(Node):
         ###########################################################################
         # Plan 1 - use this part to plan with moveit (no collision checking impl.)
         ###########################################################################
-        # # Now follows a first example to see the robot moving
-        # self.robot.set_start_state_to_current_state()
+        # Now follows a first example to see the robot moving
+        self.robot.set_start_state_to_current_state()
         
-        # # randomize the robot state
-        # self.robot_state.set_to_random_positions()
+        # randomize the robot state
+        self.robot_state.set_to_random_positions()
 
-        # # define desired position (which is random)
-        # self.robot.set_goal_state(robot_state=self.robot_state)
+        # define desired position (which is random)
+        self.robot.set_goal_state(robot_state=self.robot_state)
 
-        # # plan and execute both via moveit!!
-        # self.plan_and_execute(sleep_time=3.0)
+        # plan and execute both via moveit!!
+        self.plan_and_execute(sleep_time=3.0)
 
         ###########################################################################
         # Plan 2 - use this part to plan with avp
@@ -224,7 +224,7 @@ class AVP_Planner(Node):
     # Sending the whole trajectory for execution
     def SendTrajectoryToRobot(self):
 
-        Robot_traj_object = RobotTrajectory(self.robot_model)
+        # Robot_traj_object = RobotTrajectory(self.robot_model)
 
         joint_traj = JointTrajectory()
 
@@ -241,7 +241,7 @@ class AVP_Planner(Node):
         # sending it via moveitpy
         # traj = Robot_traj_object.set_robot_trajectory_msg(joint_traj)
 
-        self.moveit_py.execute(joint_traj, controllers=[])
+        # self.moveit_py.execute(joint_traj, controllers=[])
 
         #print(joint_traj)
         #print(self.traj1.Eval(self.traj1.duration))
